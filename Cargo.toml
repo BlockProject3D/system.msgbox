@@ -1,11 +1,11 @@
 [package]
-name = "test"
+name = "bp3d-msgbox"
 version = "0.1.0"
 authors = ["Yuri Edward <yuri6037@outlook.com>"]
-edition = "2018"
-description = ""
+edition = "2021"
+description = "Utilities to show message boxes under macOS, Windows and Linux."
 license = "BSD-3-Clause"
-repository = "https://gitlab.com/bp3d/test"
+repository = "https://gitlab.com/bp3d/system/msgbox"
 readme = "./README.MD"
 keywords = []
 categories = []
@@ -13,6 +13,7 @@ categories = []
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
 
 [features]
 

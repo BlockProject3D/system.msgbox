@@ -26,3 +26,39 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+pub enum Style {
+    Info,
+    Warning,
+    Critical
+}
+
+pub struct Message<'a> {
+    title: &'a str,
+    text: Option<&'a str>,
+    style: Style
+}
+
+impl<'a> Message<'a> {
+    pub fn new(title: &'a str) -> Self {
+        Self {
+            title,
+            text: None,
+            style: Style::Info
+        }
+    }
+
+    pub fn text(mut self, text: &'a str) -> Self {
+        self.text = Some(text);
+        self
+    }
+
+    pub fn style(mut self, style: Style) -> Self {
+        self.style = style;
+        self
+    }
+
+    pub fn show(self) -> bool {
+
+        false
+    }
+}

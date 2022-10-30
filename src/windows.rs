@@ -26,47 +26,33 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#[cfg(windows)]
-mod windows;
+use windows_sys::core::PCWSTR;
+use windows_sys::Win32::UI::WindowsAndMessaging::MessageBoxW;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_APPLMODAL;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONERROR;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONINFORMATION;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONWARNING;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_OK;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_SYSTEMMODAL;
 
-pub enum Style {
-    Info,
-    Warning,
-    Critical,
-}
+use crate::Style;
 
-pub struct Message<'a> {
-    title: &'a str,
-    text: Option<&'a str>,
-    style: Style,
-}
-
-impl<'a> Message<'a> {
-    pub fn new(title: &'a str) -> Self {
-        Self {
-            title,
-            text: None,
-            style: Style::Info,
-        }
-    }
-
-    pub fn text(mut self, text: &'a str) -> Self {
-        self.text = Some(text);
-        self
-    }
-
-    pub fn style(mut self, style: Style) -> Self {
-        self.style = style;
-        self
-    }
-
-    //The reason we allow unreachable_code is because false is to be returned only on non-recognized systems.
-    //NOTE: This may change in the future once the linux path is completely finished as the linux path could
-    //be used as default path if neither windows nor macos.
-    #[allow(unreachable_code)]
-    pub fn show(self) -> bool {
-        #[cfg(windows)]
-        return windows::show_message_box(self.title, self.text.unwrap_or(""), self.style);
+pub fn show_message_box(title: &str, text: &str, style: Style) -> bool {
+    let flags = match style {
+        Style::Critical => MB_OK | MB_ICONERROR | MB_SYSTEMMODAL,
+        Style::Warning => MB_OK | MB_ICONWARNING | MB_APPLMODAL,
+        Style::Info => MB_OK | MB_ICONINFORMATION | MB_APPLMODAL,
+    };
+    let mut title: Vec<u16> = title.encode_utf16().collect();
+    let mut text: Vec<u16> = text.encode_utf16().collect();
+    title.push(0x0); //Push the missing null byte!
+    text.push(0x0); //Push the missing null byte!
+    let title = title.as_ptr() as PCWSTR;
+    let text = text.as_ptr() as PCWSTR;
+    let res = unsafe { MessageBoxW(0, text, title, flags) };
+    if res == 0 {
         false
+    } else {
+        true
     }
 }

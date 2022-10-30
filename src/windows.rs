@@ -26,14 +26,14 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-use windows_sys::Win32::UI::WindowsAndMessaging::MessageBoxW;
-use windows_sys::Win32::UI::WindowsAndMessaging::MB_OK;
-use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONERROR;
-use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONWARNING;
-use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONINFORMATION;
-use windows_sys::Win32::UI::WindowsAndMessaging::MB_APPLMODAL;
-use windows_sys::Win32::UI::WindowsAndMessaging::MB_SYSTEMMODAL;
 use windows_sys::core::PCWSTR;
+use windows_sys::Win32::UI::WindowsAndMessaging::MessageBoxW;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_APPLMODAL;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONERROR;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONINFORMATION;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_ICONWARNING;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_OK;
+use windows_sys::Win32::UI::WindowsAndMessaging::MB_SYSTEMMODAL;
 
 use crate::Style;
 
@@ -41,7 +41,7 @@ pub fn show_message_box(title: &str, text: &str, style: Style) -> bool {
     let flags = match style {
         Style::Critical => MB_OK | MB_ICONERROR | MB_SYSTEMMODAL,
         Style::Warning => MB_OK | MB_ICONWARNING | MB_APPLMODAL,
-        Style::Info => MB_OK | MB_ICONINFORMATION | MB_APPLMODAL
+        Style::Info => MB_OK | MB_ICONINFORMATION | MB_APPLMODAL,
     };
     let mut title: Vec<u16> = title.encode_utf16().collect();
     let mut text: Vec<u16> = text.encode_utf16().collect();

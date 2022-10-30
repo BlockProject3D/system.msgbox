@@ -32,13 +32,13 @@ mod windows;
 pub enum Style {
     Info,
     Warning,
-    Critical
+    Critical,
 }
 
 pub struct Message<'a> {
     title: &'a str,
     text: Option<&'a str>,
-    style: Style
+    style: Style,
 }
 
 impl<'a> Message<'a> {
@@ -46,7 +46,7 @@ impl<'a> Message<'a> {
         Self {
             title,
             text: None,
-            style: Style::Info
+            style: Style::Info,
         }
     }
 
